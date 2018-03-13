@@ -13,18 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WelcomeController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(ModelAndView modelAndView) {
-        return "index";
-    }
-
-    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
+    @RequestMapping(value = {"/home","/"}, method = RequestMethod.GET)
     public ModelAndView printWelcome(ModelAndView model, Principal principal) {
         System.out.println("****** WelcomeController *****");
 
         String name = principal.getName();
         model.addObject("username", name);
-        model.setViewName("welcome");
+        model.setViewName("home");
         return model;
     }
 }

@@ -9,9 +9,10 @@
     <security:http authentication-manager-ref="authenticationManager" auto-config="false">
         <security:csrf disabled="true"/>
         <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER"/>
-        <security:intercept-url pattern="/welcome" access="isAuthenticated()"/>
-        <!--<security:http-basic/>-->
-        <security:form-login login-processing-url="/welcome" default-target-url="/"/>
+        <security:intercept-url pattern="/home" access="isAuthenticated()"/>
+        <security:intercept-url pattern="/" access="isAuthenticated()"/>
+       <!-- <security:http-basic/>-->
+        <security:form-login login-processing-url="/j_spring_security_check" default-target-url="/home"/>
     </security:http>
 
     <security:authentication-manager id="authenticationManager">
@@ -23,6 +24,9 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
+    <bean id="basicAuthenticationEntryPoint" class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+        <property name="realmName" value="ROLE_"/>
+    </bean>
 
     <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
         <constructor-arg ref="logoutSuccessHandler" index="0"/>
@@ -31,6 +35,7 @@
                 <ref bean="securityContextLogoutHandler"/>
             </list>
         </constructor-arg>
+        <property name="filterProcessesUrl" value="/j_spring_security_logout"/>
     </bean>
 
     <bean id="logoutSuccessHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler"/>
